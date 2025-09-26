@@ -5,7 +5,7 @@ import "./stat-card.scss";
 
 type StatType = "workout" | "calories" | "steps";
 
-const iconFor: Record<StatType, React.ComponentType<any>> = {
+const iconFor: Record<StatType, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
   workout: Dumbbell,
   calories: Flame,
   steps: Footprints

@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { hasEnvVars } from "../utils";
+import { checkOnboardingStatus } from "../onboarding";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -57,6 +58,41 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
     return NextResponse.redirect(url);
+  }
+
+  // Check onboarding status for authenticated users
+  if (user && request.nextUrl.pathname.startsWith("/protected")) {
+    try {
+      const hasCompletedOnboarding = await checkOnboardingStatus(user.sub);
+      
+      if (!hasCompletedOnboarding) {
+        // User hasn't completed onboarding, redirect to onboarding page
+        const url = request.nextUrl.clone();
+        url.pathname = "/onboarding";
+        return NextResponse.redirect(url);
+      }
+    } catch (error) {
+      // If there's an error checking onboarding status, allow access
+      // This prevents blocking users if there are database issues
+      console.error("Error checking onboarding status:", error);
+    }
+  }
+
+  // Redirect users who have completed onboarding away from onboarding page
+  if (user && request.nextUrl.pathname === "/onboarding") {
+    try {
+      const hasCompletedOnboarding = await checkOnboardingStatus(user.sub);
+      
+      if (hasCompletedOnboarding) {
+        // User has already completed onboarding, redirect to protected area
+        const url = request.nextUrl.clone();
+        url.pathname = "/protected";
+        return NextResponse.redirect(url);
+      }
+    } catch (error) {
+      // If there's an error checking onboarding status, allow access to onboarding
+      console.error("Error checking onboarding status:", error);
+    }
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
