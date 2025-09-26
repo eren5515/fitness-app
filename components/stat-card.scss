@@ -1,0 +1,45 @@
+.stat {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  color: #ffffff;
+}
+
+.stat__iconWrap {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.stat__icon {
+  width: 22px;
+  height: 22px;
+}
+
+.stat__title {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.stat__value {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.stat__subtitle {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.stat--blue { background: linear-gradient(180deg, #22c1c3, #1d8cf8); }
+.stat--orange { background: linear-gradient(180deg, #ff9966, #ff5e62); }
+.stat--purple { background: linear-gradient(180deg, #a18cd1, #6f59c2); }
+
+
